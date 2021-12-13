@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>RSA</title>
+    </head>
+    <body>
+        
+
+        <script>
+            let P = 3; Q = 7;
+            let N = P*Q;
+            let D = (P-1)*(Q-1);
+            let E = getSomeE(D);
+            let pubKey = [N,E];
+            let K = getK(E,D);
+            console.log(crypt(11));
+            console.log(encrypt(2));
+           
+           function getSomeE(num){
+               let numArtadrichner = artadrichner(num);
+                for(let i = 2;i<num;i++){
+                    let chunen = true;
+                    let iArtadrichner = artadrichner(i);
+                    for(let j = 0;j<=numArtadrichner.length-1;j++){
+                        for(let k = 0;k<=iArtadrichner.length-1;k++){
+                            if(numArtadrichner[j] == iArtadrichner[k]){
+                                chunen = false;
+                            }
+                        }
+                    }
+                    if(chunen){return i;}
+                }
+           }
+           function artadrichner(num){
+               let n = 2;
+               let artadrichner = [];
+               while(num>1){
+                    if(num%n == 0){
+                        num/=n;
+                        artadrichner.push(n);
+                    }else{
+                        n++;
+                    }
+               }
+               return artadrichner;
+           }
+           function isPrime(num) {
+            for(var i = 2; i < num; i++)
+                if(num % i === 0) return false;
+            return num > 1;
+            }
+           function getK(e,d){
+               for(let k = 1;k<=100000;k++){
+                   if((e*k)%D == 1){
+                       return k;
+                   }
+               }
+           }
+           function pow(num1,num2){
+               let result = num1;
+               for(let i = 1;i<=num2-1;i++){
+                   result *=num1;
+               }
+               return result;
+           }
+           function crypt (number) {
+               return(pow(number,E)%N);
+           }
+           function encrypt(number){
+               return(pow(number,K)%N);
+           }
+      </script>
+    </body>
+</html>
